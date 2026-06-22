@@ -1,6 +1,6 @@
 # F1 Driver Alpha Framework & Competitive Intelligence Platform
 
-Performance intelligence platform analyzing 75 years of Formula 1 history, evaluating 861 drivers across 920 constructor seasons and more than 70,000 race, qualifying, lap-time, championship, and operational records using Python, SQL, Power BI, and advanced analytics to identify the drivers of long-term competitive success.
+Performance intelligence platform analyzing 75 years of Formula 1 history, evaluating 861 drivers across 920 constructor seasons and more than 70,000 race, qualifying, lap-time, championship, and operational records using Python, SQL, Power BI, and Jupyter to identify the drivers of long-term competitive success.
 
 ## Business Problem
 
