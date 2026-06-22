@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="F1_Analytics Final.db" readonly="0" foreign_keys="0" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3353"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="master_driver_dataset" custom_title="0" dock_id="1" table="4,21:mainmaster_driver_dataset"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011300ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">PRAGMA table_info(master_driver_dataset);
+SELECT
+    driver_name,
+    Driver_Alpha_V3,
+    Qualifying_Score,
+    Race_Pace_Score
+FROM master_driver_dataset
+ORDER BY Driver_Alpha_V3 DESC
+LIMIT 20;
+
+
+WITH era_rankings AS (
+    SELECT
+        driver_name,
+        Driver_Alpha_V3,
+        CASE
+            WHEN Championships &gt;= 5 THEN 'Modern Legends'
+            WHEN Championships &gt;= 2 THEN 'Champions'
+            ELSE 'Elite Drivers'
+        END AS Driver_Tier,
+        RANK() OVER (
+            PARTITION BY
+                CASE
+                    WHEN Championships &gt;= 5 THEN 'Modern Legends'
+                    WHEN Championships &gt;= 2 THEN 'Champions'
+                    ELSE 'Elite Drivers'
+                END
+            ORDER BY Driver_Alpha_V3 DESC
+        ) AS Era_Rank
+    FROM master_driver_dataset
+)
+
+SELECT *
+FROM era_rankings
+WHERE Era_Rank &lt;= 5;
+
+SELECT
+    driver_name,
+    Championships,
+    Opportunity_Score,
+    Driver_Alpha_V3
+FROM master_driver_dataset
+WHERE Championships &gt; 0
+ORDER BY Driver_Alpha_V3 DESC
+LIMIT 20;
+
+
+SELECT
+    driver_name,
+    Qualifying_Score
+FROM master_driver_dataset
+WHERE Qualifying_Score IS NOT NULL
+ORDER BY Qualifying_Score DESC
+LIMIT 20;
+
+
+SELECT
+    driver_name,
+    Race_Pace_Score
+FROM master_driver_dataset
+WHERE Race_Pace_Score IS NOT NULL
+ORDER BY Race_Pace_Score DESC
+LIMIT 20;
+
+
+SELECT
+    constructorRef,
+    Avg_Pit_Stop,
+    Operational_Efficiency_Score
+FROM team_operational_efficiency
+ORDER BY Operational_Efficiency_Score DESC;
+
+
+SELECT
+    year,
+    constructorRef,
+    wins,
+    Win_Share,
+    Points_Share,
+    Car_Dominance_V2
+FROM car_dominance_final
+ORDER BY Car_Dominance_V2 DESC
+LIMIT 20;
+
+
+SELECT
+    driver_name,
+    Championships,
+    Longevity_Score,
+    Driver_Alpha_V3
+FROM master_driver_dataset
+ORDER BY Longevity_Score DESC
+LIMIT 20;
+
+
+
+SELECT
+    driver_name,
+    Driver_Alpha_V3,
+    Wins,
+    Podiums,
+    Races
+FROM master_driver_dataset
+WHERE Championships = 0
+  AND Races &gt;= 50
+ORDER BY Driver_Alpha_V3 DESC
+LIMIT 20;
+
+
+SELECT
+    driver_name,
+    Avg_Outperformance,
+    Driver_Alpha_V3
+FROM master_driver_dataset
+WHERE Races &gt;= 50
+ORDER BY Avg_Outperformance DESC
+LIMIT 20;
+
+
+SELECT
+    driver_name,
+    Opportunity_Score,
+    Championships,
+    Driver_Alpha_V3
+FROM master_driver_dataset
+WHERE Races &gt;= 50
+ORDER BY Opportunity_Score DESC
+LIMIT 20;
+
+
+SELECT
+    driver_name,
+    Wins,
+    Races,
+    Win_Rate
+FROM master_driver_dataset
+WHERE Races &gt;= 50
+ORDER BY Win_Rate DESC
+LIMIT 20;
+
+
+
+SELECT
+    driver_name,
+    Podiums,
+    Races,
+    Podium_Rate
+FROM master_driver_dataset
+WHERE Races &gt;= 50
+ORDER BY Podium_Rate DESC
+LIMIT 20;
+
+
+SELECT
+    driver_name,
+    Championships,
+    Wins,
+    Driver_Alpha_V3
+FROM master_driver_dataset
+WHERE Races &gt;= 50
+ORDER BY Driver_Alpha_V3 DESC
+LIMIT 10;
+
+
+SELECT
+    driver_name,
+    Opportunity_Norm,
+    Outperformance_Norm,
+    Championship_Norm,
+    Longevity_Norm,
+    Driver_Alpha_V3
+FROM master_driver_dataset
+WHERE Races &gt;= 50
+ORDER BY Driver_Alpha_V3 DESC
+LIMIT 20;</sql><current_tab id="0"/></tab_sql></sqlb_project>
